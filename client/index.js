@@ -1,19 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {SlideShow} from "./components";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+class Index extends React.Component {
 
-import Header from './components/Header/index.jsx';
-import Content from './components/Content/index.jsx';
+    render() {
+        return  (
+          <SlideShow />
+        );
+    }
 
-const Index = () => {
-
-    return (
-        <div className="container-fluid">
-            <Header />
-            <Content />
-        </div>
-    );
-};
-
+}
 ReactDOM.render(<Index />, document.getElementById('root'));
