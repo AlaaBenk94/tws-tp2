@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {SlideShow} from "./components";
+import {SlideShow} from "./components/SlideShow";
 
 class Index extends React.Component {
 
