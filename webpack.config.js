@@ -7,6 +7,10 @@ module.exports = {
         filename: 'bundle.js'
     },
 
+    devServer: {
+    contentBase: './dist',
+    },
+
     node: {
         fs: "empty",
         net: 'empty',

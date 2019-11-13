@@ -1,15 +1,12 @@
 import React from 'react';
+import Container from "react-bootstrap/Container";
+import {Route} from "react-router-dom";
 import {Slides} from "./Slides";
-import {ToolBar} from "./Toolbar";
 
 export class SlideShow extends React.Component {
-
     render() {
         return  (
-            <div class="container-fluid">
-                <Slides />
-                <ToolBar />
-            </div>
+            <Route path="/:num" component={Slides}/>
         );
     }
 

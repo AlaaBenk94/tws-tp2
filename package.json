@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node serveur/index.js",
     "build": "webpack --mode production",
-    "dev": "webpack --mode development && node serveur/index.js",
+    "dev": "webpack-dev-server --open && nodemon serveur/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,14 +17,17 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "express": "^4.17.1",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "redux-devtools": "^3.5.0",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9"
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
@@ -34,6 +37,9 @@
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
     "require": "^2.4.20",
     "style-loader": "^1.0.0"
   }
