@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {SlideShow} from "./components/SlideShow";
 
 class Index extends React.Component {
-
     render() {
         return  (
             <Router>

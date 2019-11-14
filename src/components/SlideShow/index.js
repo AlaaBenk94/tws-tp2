@@ -1,13 +1,16 @@
-import React from 'react';
-import Container from "react-bootstrap/Container";
-import {Route} from "react-router-dom";
+import React, {Fragment} from 'react';
+import {Redirect, Route, Switch} from "react-router-dom";
 import {Slides} from "./Slides";
 
 export class SlideShow extends React.Component {
     render() {
         return  (
-            <Route path="/:num" component={Slides}/>
+            <Switch>
+                <Route path="/:num" component={Slides}/>
+                <Route>
+                    <Redirect to="/1"/>
+                </Route>
+            </Switch>
         );
     }
-
 }
