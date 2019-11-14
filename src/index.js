@@ -4,13 +4,17 @@ import {HashRouter as Router, Route} from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {SlideShow} from "./components/SlideShow";
+import {Provider} from "react-redux";
+import store from "./store";
 
 class Index extends React.Component {
     render() {
         return  (
-            <Router>
-                <Route path="/" component={SlideShow} />
-            </Router>
+            <Provider store={store}>
+                <Router>
+                    <Route path="/" component={SlideShow} />
+                </Router>
+            </Provider>
         );
     }
 

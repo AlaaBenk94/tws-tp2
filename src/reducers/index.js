@@ -1,4 +1,4 @@
-import {ADD_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE, REMOVE_SLIDE} from "../actions";
+import {ADD_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE, REMOVE_SLIDE, SET_SLIDE} from "../actions";
 
 const initialState = {
     index: 1,
@@ -14,25 +14,45 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
     switch (action.type) {
-        case ADD_SLIDE:
-            console.log(`add slide ${action.payload}`);
-            state.slides.push(action.payload);
-            break;
-        case REMOVE_SLIDE:
+        case ADD_SLIDE: {
+            console.log("add slide");
+            let newSlides = [...state.slides];
+            newSlides.splice(action.pos, 0, action.payload);
+            return {
+                ...state,
+                slides: newSlides
+            };
+        }
+        case REMOVE_SLIDE: {
             console.log("remove slide");
-            break;
+            let newSlides = [...state.slides];
+            newSlides.splice(action.pos, 0, action.payload);
+            return {
+                ...state,
+                slides: state.slides.splice(action.pos, 1)
+            };
+        }
         case NEXT_SLIDE:
             console.log("next slide");
-            state.index = state.index >= state.slides.length ? state.slides.length : (state.index + 1);
-            break;
+            return {
+                ...state,
+                index: ((state.index + 1) > state.slides.length) ? state.slides.length : (state.index + 1)
+            };
         case PREVIOUS_SLIDE:
-            console.log("Previous Slide");
-            state.index = state.index <= 1 ? 1 : (state.index - 1);
-            break;
+            console.log("prev Slide");
+            return {
+                ...state,
+                index: ((state.index - 1) < 1) ? 1 : (state.index - 1)
+            };
+        case SET_SLIDE:
+            console.log("set Slide");
+            return {
+                ...state,
+                index: action.index
+            };
         default:
             return state
     }
-    return state;
-};
+}
 
 export default rootReducer;

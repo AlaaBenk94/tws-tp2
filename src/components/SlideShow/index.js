@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Redirect, Route, Switch} from "react-router-dom";
-import {Slides} from "./Slides";
+import {SlidesConnected as Slides} from "./Slides";
 
 export class SlideShow extends React.Component {
     render() {
