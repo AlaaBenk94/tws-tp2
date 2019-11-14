@@ -8,6 +8,7 @@ import {setSlide} from "../../../actions";
 
 const mapStateToProps = (state, ownProps) => {
     return {
+        mode: state.mode,
         index: state.index,
         slides: state.slides
     }
@@ -27,19 +28,22 @@ export class Slides extends React.Component {
             prevStoreIndex = prevProps.index,
             actualStoreIndex = this.props.index;
 
-        if(prevPathIndex === actualPathIndex && prevStoreIndex !== actualStoreIndex && actualPathIndex !== actualStoreIndex)
-            this.props.history.push(`/${actualStoreIndex}`);
+        if (prevPathIndex === actualPathIndex
+            && prevStoreIndex !== actualStoreIndex
+            && actualPathIndex !== actualStoreIndex)
+            this.props.history.push(`/${this.props.mode}/${actualStoreIndex}`);
 
-        if(prevPathIndex !== actualPathIndex && prevStoreIndex === actualStoreIndex)
+        if (prevPathIndex !== actualPathIndex
+            && prevStoreIndex === actualStoreIndex)
             this.props.setSlide(actualPathIndex);
 
     }
 
     render() {
-        return  (
+        return (
             <Container fluid={true} className="h-100">
-                <Slide />
-                <ToolBar />
+                <Slide/>
+                <ToolBar/>
             </Container>
         );
     }
