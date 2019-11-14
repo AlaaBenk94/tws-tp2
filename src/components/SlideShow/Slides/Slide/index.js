@@ -17,12 +17,12 @@ class Slide extends React.Component {
     render() {
         if(this.props.slide.type === "title")
             return (
-                <Row className="justify-content-center align-items-center h-75 bg-primary text-white" >
+                <Row className="justify-content-center align-items-center h-75 bg-light text-dark" >
                     <Titre title={this.props.slide.title} />
                 </Row>)
         else
             return  (
-                <Row className="justify-content-center align-items-center h-75 bg-primary text-white">
+                <Row className="justify-content-center align-items-center h-75 bg-light text-dark">
                     <Titre title={this.props.slide.title} />
                     <Content />
                 </Row>
