@@ -7,11 +7,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {SlideShowConnected as SlideShow} from "./components/SlideShow";
 import {Provider} from "react-redux";
 import store from "./store";
-import {Switch} from "react-bootstrap";
+import {Switch} from "react-router-dom";
+import {socketClient} from "./middleware";
+import {SET_SLIDE, setSlide} from "./actions";
 
 export const PRESENT = "present";
 export const CONTROLER = "controler";
 export const EDIT = "edit";
+
+socketClient.on('set_slide', (action) => {
+    console.log(JSON.stringify(action));
+    if (action.type === SET_SLIDE) {
+        store.dispatch(setSlide(action.index, true));
+    }
+});
 
 class Index extends React.Component {
     render() {

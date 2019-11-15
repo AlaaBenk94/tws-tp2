@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import {SlideConnected as Slide} from "./Slide";
 import {connect} from "react-redux";
 import {setSlide} from "../../../actions";
+import {CONTROLER, EDIT, PRESENT} from "../../../index";
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -20,7 +21,24 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+function openFullscreen(elem) {
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(e => console.log(e));
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen().catch(e => console.log(e));
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen().catch(e => console.log(e));
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen().catch(e => console.log(e));
+    }
+}
+
 export class Slides extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.SlideRef = React.createRef();
+    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let prevPathIndex = parseInt(prevProps.match.params.num),
@@ -41,9 +59,9 @@ export class Slides extends React.Component {
 
     render() {
         return (
-            <Container fluid={true} className="h-100">
-                <Slide/>
-                <ToolBar/>
+            <Container ref={this.SlideRef} fluid={true} className="h-100">
+                <Slide className={"justify-content-center align-items-center h-100 bg-light text-dark"}/>
+                {this.props.mode === CONTROLER || this.props.mode === EDIT ? <ToolBar/> : ''}
             </Container>
         );
     }

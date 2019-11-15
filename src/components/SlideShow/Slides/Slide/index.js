@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import {connect} from "react-redux";
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(`Slides class with state ${JSON.stringify(state)}`)
     return {
         index: state.index,
         slide: state.slides[state.index - 1]
@@ -13,20 +12,12 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 class Slide extends React.Component {
-
     render() {
-        if(this.props.slide.type === "title")
             return (
-                <Row className="justify-content-center align-items-center h-75 bg-light text-dark" >
+                <Row className={this.props.className} >
                     <Titre title={this.props.slide.title} />
-                </Row>)
-        else
-            return  (
-                <Row className="justify-content-center align-items-center h-75 bg-light text-dark">
-                    <Titre title={this.props.slide.title} />
-                    <Content />
-                </Row>
-            );
+                    {this.props.slide.type === "title" ? '' : <Content />}
+                </Row>);
     }
 }
 

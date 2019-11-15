@@ -12,20 +12,20 @@ export function addSlide(payload, pos) {
         pos};
 }
 
-export function removeSlide(payload) {
-    return { type: REMOVE_SLIDE, payload };
+export function removeSlide(payload, external = false) {
+    return { type: REMOVE_SLIDE, payload, external};
 }
 
-export function nextSlide(payload) {
-    return { type: NEXT_SLIDE, payload };
+export function nextSlide(payload, external = false) {
+    return { type: NEXT_SLIDE, payload, external };
 }
 
-export function prevSlide(payload) {
-    return { type: PREVIOUS_SLIDE, payload };
+export function prevSlide(payload, external = false) {
+    return { type: PREVIOUS_SLIDE, payload, external };
 }
 
-export function setSlide(index) {
-    return { type: SET_SLIDE, index };
+export function setSlide(index, external = false) {
+    return { type: SET_SLIDE, index, external };
 }
 
 export function setMode(mode) {
