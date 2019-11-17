@@ -1,4 +1,13 @@
-import {ADD_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE, REMOVE_SLIDE, SET_MODE, SET_SLIDE} from "../actions";
+import {
+    ADD_DRAW_POINTS,
+    ADD_SLIDE,
+    NEXT_SLIDE,
+    PREVIOUS_SLIDE,
+    REMOVE_SLIDE,
+    RESET_DRAW_POINTS,
+    SET_MODE,
+    SET_SLIDE
+} from "../actions";
 import {PRESENT} from "../index";
 
 const initialState = {
@@ -11,7 +20,12 @@ const initialState = {
         {type: 'content', title: 'TP 3', text: "Le TP 3", visible: true, notes: "note 4"},
         {type: 'content', title: 'TP 4', text: "Le TP 4", visible: true, notes: "note 5"},
         {type: 'title', title: 'Question ?', visible: true, notes: "note 6"},
-    ]
+    ],
+    drawing: {
+        clickX: [],
+        clickY: [],
+        clickDrag: []
+    }
 };
 
 function rootReducer(state = initialState, action) {
@@ -34,29 +48,49 @@ function rootReducer(state = initialState, action) {
                 slides: state.slides.splice(action.pos, 1)
             };
         }
-        case NEXT_SLIDE:
-            console.log("next slide");
-            return {
-                ...state,
-                index: ((state.index + 1) > state.slides.length) ? state.slides.length : (state.index + 1)
-            };
-        case PREVIOUS_SLIDE:
-            console.log("prev Slide");
-            return {
-                ...state,
-                index: ((state.index - 1) < 1) ? 1 : (state.index - 1)
-            };
         case SET_SLIDE:
             console.log("set Slide");
             return {
                 ...state,
-                index: action.index
+                index: (action.index > state.slides.length) ? state.slides.length : (action.index < 1 ? 1 : action.index),
+                drawing: {
+                    clickX: [],
+                    clickY: [],
+                    clickDrag: []
+                }
             };
         case SET_MODE:
             console.log("set Mode");
             return {
                 ...state,
                 mode: action.mode
+            };
+        case ADD_DRAW_POINTS:
+            console.log("add draw points");
+            console.log(JSON.stringify(state.drawing.clickX.length));
+            let newClickX = [...state.drawing.clickX],
+                newClickY = [...state.drawing.clickY],
+                newClickDrag = [...state.drawing.clickDrag];
+            newClickX.push(...action.clickX);
+            newClickY.push(...action.clickY);
+            newClickDrag.push(...action.clickDrag);
+            return {
+                ...state,
+                drawing: {
+                    clickX: newClickX,
+                    clickY: newClickY,
+                    clickDrag: newClickDrag
+                }
+            };
+        case RESET_DRAW_POINTS:
+            console.log("reset draw points");
+            return {
+                ...state,
+                drawing: {
+                    clickX: [],
+                    clickY: [],
+                    clickDrag: []
+                }
             };
         default:
             return state

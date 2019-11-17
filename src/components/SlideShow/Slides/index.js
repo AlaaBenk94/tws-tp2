@@ -52,15 +52,16 @@ export class Slides extends React.Component {
             this.props.history.push(`/${this.props.mode}/${actualStoreIndex}`);
 
         if (prevPathIndex !== actualPathIndex
-            && prevStoreIndex === actualStoreIndex)
+            && prevStoreIndex === actualStoreIndex) {
             this.props.setSlide(actualPathIndex);
+        }
 
     }
 
     render() {
         return (
             <Container ref={this.SlideRef} fluid={true} className="h-100">
-                <Slide className={"justify-content-center align-items-center h-100 bg-light text-dark"}/>
+                <Slide />
                 {this.props.mode === CONTROLER || this.props.mode === EDIT ? <ToolBar/> : ''}
             </Container>
         );

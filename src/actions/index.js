@@ -1,9 +1,10 @@
 export const ADD_SLIDE = "ADD_SLIDE";
 export const REMOVE_SLIDE = "REMOVE_SLIDE";
-export const NEXT_SLIDE = 'NEXT_SLIDE';
-export const PREVIOUS_SLIDE = 'PREVIOUS_SLIDE';
 export const SET_SLIDE = 'SET_SLIDE';
 export const SET_MODE = 'SET_MODE';
+export const ADD_DRAW_POINTS = 'ADD_DRAW_POINTS';
+export const RESET_DRAW_POINTS = 'RESET_DRAW_POINTS';
+
 
 export function addSlide(payload, pos) {
     return {
@@ -16,18 +17,18 @@ export function removeSlide(payload, external = false) {
     return { type: REMOVE_SLIDE, payload, external};
 }
 
-export function nextSlide(payload, external = false) {
-    return { type: NEXT_SLIDE, payload, external };
-}
-
-export function prevSlide(payload, external = false) {
-    return { type: PREVIOUS_SLIDE, payload, external };
-}
-
 export function setSlide(index, external = false) {
     return { type: SET_SLIDE, index, external };
 }
 
-export function setMode(mode) {
-    return { type: SET_MODE, mode}
+export function setMode(mode, external = false) {
+    return { type: SET_MODE, mode, external}
+}
+
+export function addDrawPoints(clickX, clickY, clickDrag, external = false) {
+    return { type: ADD_DRAW_POINTS, clickX, clickY, clickDrag, external}
+}
+
+export function resetDrawPoints(external = false) {
+    return { type: RESET_DRAW_POINTS, external}
 }
