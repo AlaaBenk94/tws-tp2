@@ -11,6 +11,7 @@
         html, body, #app {
             height: 100%;
             width: 100%;
+            overflow: hidden;
         }
 
         * {
@@ -19,7 +20,7 @@
         }
 
         .stroke {
-            border: crimson solid 2px;
+            /*border: crimson solid 2px;*/
             position: absolute;
             top: 0;
             left: 0;
@@ -28,6 +29,18 @@
             height: 100%;
         }
 
+        #fullscreen {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .toolbar {
+            position: relative;
+            transform: translateY(-100%);
+        }
+        
     </style>
 
 </head>

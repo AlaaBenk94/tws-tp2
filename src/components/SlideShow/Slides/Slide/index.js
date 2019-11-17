@@ -31,11 +31,40 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+function toggleFullScreen(elem) {
+    if ((document.fullscreenElement !== undefined && document.fullScreenElement === null)
+        || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null)
+        || (document.mozFullScreen !== undefined && !document.mozFullScreen)
+        || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+        if (elem.requestFullScreen) {
+            elem.requestFullScreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullScreen) {
+            elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    } else {
+        if (document.cancelFullScreen) {
+            document.cancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
+
 class Slide extends React.Component {
 
     constructor(props) {
         super(props);
         this.refCanvas = React.createRef();
+        this.slideView = React.createRef();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -43,16 +72,20 @@ class Slide extends React.Component {
     }
 
     render() {
-        let h = this.props.mode === EDIT ? 'h-75' : 'h-100';
         return (
-            <Row className={`justify-content-center align-items-center ${h} bg-light text-dark`}>
+            <Row ref={this.slideView} className={`justify-content-center align-items-center h-100 bg-light text-dark`}>
+                <div id="fullscreen" className="btn btn-danger"
+                    onClick={() => toggleFullScreen(this.slideView.current)} >{'[ ]'}</div>
                 <Titre title={this.props.slide.title}/>
                 {this.props.slide.type === "title" ? '' : <Content/>}
-                <canvas className={`stroke ${h}`}
-                        ref={this.refCanvas}
-                        onPointerDown={pointerDownHandler}
-                        onPointerMove={pointerMoveHandler}
-                        onPointerUp={(ev) => {pointerUpEvent(ev); this.props.addPoints(clickX, clickY, clickDrag)}}/>
+                <canvas className={`stroke h-100`}
+                            ref={this.refCanvas}
+                            onPointerDown={pointerDownHandler}
+                            onPointerMove={pointerMoveHandler}
+                            onPointerUp={(ev) => {
+                                pointerUpEvent(ev);
+                                this.props.addPoints(clickX, clickY, clickDrag);
+                            }}/>
             </Row>);
     }
 }

@@ -13,8 +13,8 @@ export function addSlide(payload, pos) {
         pos};
 }
 
-export function removeSlide(payload, external = false) {
-    return { type: REMOVE_SLIDE, payload, external};
+export function removeSlide(index, external = false) {
+    return { type: REMOVE_SLIDE, index, external};
 }
 
 export function setSlide(index, external = false) {

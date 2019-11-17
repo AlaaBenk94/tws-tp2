@@ -1,7 +1,40 @@
+import OneDollar from "./onedollar";
+
+const MOUSE_GESTURE = "mouse",
+        PEN_GESTURE = "pen",
+        TOUCH_GESTURE = "touch";
+
 let clickX = [],
     clickY = [],
     clickDrag = [],
+    gesturePoints = [],
     paint = false;
+
+// reconizer options
+const options = {
+    'score': 80,  // The similarity threshold to apply the callback(s)
+    'parts': 64,  // The number of resampling points
+    'step': 2,    // The degree of one single rotation step
+    'angle': 45,  // The last degree of rotation
+    'size': 250   // The width and height of the scaling bounding box
+};
+
+// create new reconizer
+const recognizer = new OneDollar(options);
+
+// adding some shapes
+recognizer.add('triangle', [[627, 213], [626, 217], [617, 234], [611, 248], [603, 264], [590, 287], [552, 329], [524, 358],
+    [489, 383], [461, 410], [426, 444], [416, 454], [407, 466], [405, 469], [411, 469], [428, 469], [453, 470], [513, 478],
+    [555, 483], [606, 493], [658, 499], [727, 505], [762, 507], [785, 508], [795, 508], [796, 505], [796, 503], [796, 502],
+    [796, 495], [790, 473], [785, 462], [776, 447], [767, 430], [742, 390], [724, 362], [708, 340], [695, 321], [673, 289],
+    [664, 272], [660, 263], [659, 261], [658, 256], [658, 255], [658, 255]]);
+
+recognizer.add('circle', [[621, 225], [616, 225], [608, 225], [601, 225], [594, 227], [572, 235], [562, 241], [548, 251],
+    [532, 270], [504, 314], [495, 340], [492, 363], [492, 385], [494, 422], [505, 447], [524, 470], [550, 492], [607, 523],
+    [649, 531], [689, 531], [751, 523], [782, 510], [807, 495], [826, 470], [851, 420], [859, 393], [860, 366], [858, 339],
+    [852, 311], [833, 272], [815, 248], [793, 229], [768, 214], [729, 198], [704, 191], [678, 189], [655, 188], [623, 188],
+    [614, 188], [611, 188], [611, 188]]);
+
 
 function addClick(x, y, dragging) {
     clickX.push(x);
@@ -9,7 +42,11 @@ function addClick(x, y, dragging) {
     clickDrag.push(dragging);
 }
 
-function redraw(refCanvas) {
+function addGesture(xy) {
+    gesturePoints.push(xy);
+}
+
+function redraw(refCanvas, gesture = MOUSE_GESTURE) {
     let context = refCanvas.getContext('2d'),
         width = refCanvas.getBoundingClientRect().width,
         height = refCanvas.getBoundingClientRect().height;
@@ -19,49 +56,91 @@ function redraw(refCanvas) {
 
     context.clearRect(0, 0, context.width, context.height); // Clears the canvas
 
-    context.strokeStyle = "#df4b26";
-    context.lineJoin = "round";
-    context.lineWidth = 2;
 
-    for (let i = 0; i < clickX.length; i++) {
-        context.beginPath();
-        if (clickDrag[i] && i) {
-            context.moveTo(clickX[i - 1] * width, clickY[i - 1] * height);
-        } else {
-            context.moveTo((clickX[i] * width) - 1, clickY[i] * height);
-        }
-        context.lineTo(clickX[i] * width, clickY[i] * height);
-        context.closePath();
-        context.stroke();
+    switch (gesture) {
+        case MOUSE_GESTURE:
+        case PEN_GESTURE:
+            // console.log('mouse gesture redraw');
+            context.strokeStyle = "#df4b26";
+            context.lineJoin = "round";
+            context.lineWidth = 2;
+            for (let i = 0; i < clickX.length; i++) {
+                context.beginPath();
+                if (clickDrag[i] && i) {
+                    context.moveTo(clickX[i - 1] * width, clickY[i - 1] * height);
+                } else {
+                    context.moveTo((clickX[i] * width) - 1, clickY[i] * height);
+                }
+                context.lineTo(clickX[i] * width, clickY[i] * height);
+                context.closePath();
+                context.stroke();
+            }
+            break;
+        case TOUCH_GESTURE:
+            // console.log('touch gesture redraw');
+            if(gesturePoints.length > 0) {
+                context.strokeStyle = "#666";
+                context.lineJoin = "round";
+                context.lineWidth = 5;
+
+                context.beginPath();
+                context.moveTo(gesturePoints[0][0] * width, gesturePoints[0][1] * height);
+                for (let i = 1; i < gesturePoints.length; i++)
+                    context.lineTo(gesturePoints[i][0] * width - 1, gesturePoints[i][1] * height);
+                context.stroke();
+            }
+            break;
+        default:
+            console.log(`pointerType ${gesture} is not suported`);
     }
 }
 
-function pointerDownHandler(ev) {
-    let refCanvas = ev.target;
-    console.error('HEY ! ICI ON PEUT DIFFERENCIER QUEL TYPE DE POINTEUR EST UTILISE !');
-
+function storeDrawPoints (ev, refCanvas, moving) {
     let width = refCanvas.getBoundingClientRect().width,
         height = refCanvas.getBoundingClientRect().height,
         mouseX = (ev.pageX - refCanvas.offsetLeft) / width,
         mouseY = (ev.pageY - refCanvas.offsetTop) / height;
 
+    switch (ev.pointerType) {
+        case MOUSE_GESTURE:
+            // case PEN_GESTURE:
+            addClick(mouseX, mouseY, moving);
+            break;
+        case TOUCH_GESTURE:
+            addGesture([mouseX, mouseY]);
+            break;
+        default:
+            console.log(`pointerType ${ev.pointerType} is not suported`);
+    }
+}
+
+
+function pointerDownHandler(ev) {
+    // console.info("pointerDownHandler " + paint);
+    let refCanvas = ev.target;
     paint = true;
-    addClick(mouseX, mouseY, false);
-    redraw(refCanvas);
+    storeDrawPoints(ev, refCanvas, false);
+    redraw(refCanvas, ev.pointerType);
 }
 
 function pointerMoveHandler(ev) {
+
+    // console.info("+ pointerMoveHandler " + paint);
     let refCanvas = ev.target;
     if (paint) {
-        let width = refCanvas.getBoundingClientRect().width,
-            height = refCanvas.getBoundingClientRect().height;
-        addClick((ev.pageX - refCanvas.offsetLeft) / width, (ev.pageY - refCanvas.offsetTop) / height, true);
-        redraw(refCanvas);
+        // console.info("++ pointerMoveHandler " + paint);
+        storeDrawPoints(ev, refCanvas, true);
+        // console.info("-- pointerMoveHandler " + paint);
+        redraw(refCanvas, ev.pointerType);
     }
 }
 
 function pointerUpEvent(ev) {
+    // console.info("+ pointerUpEvent " + paint);
     paint = false;
+    let result = recognizer.check(gesturePoints);
+    console.log(`result : `);
+    console.log(result);
 }
 
 function setPoints(drawing, canvas) {
@@ -71,5 +150,9 @@ function setPoints(drawing, canvas) {
     redraw(canvas);
 }
 
-export {addClick, pointerDownHandler, pointerMoveHandler, pointerUpEvent, setPoints,
+function resetGesture() {
+    gesturePoints = [];
+}
+
+export {addClick, pointerDownHandler, pointerMoveHandler, pointerUpEvent, setPoints, resetGesture,
         clickX, clickY, clickDrag};
