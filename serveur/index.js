@@ -42,7 +42,12 @@ io.on('connection', function (socket) {
 
     socket.on(SET_SLIDE, (action) => {
         console.log(`received set slide action ${JSON.stringify(action)} from ${socket.id}`);
-        socket.broadcast.emit(SET_SLIDE, action);
+        if( lastSetSlideAction.index !== action.index) {
+            console.log(`${lastSetSlideAction} !== ${action}`);
+            lastSetSlideAction = action;
+            socket.broadcast.emit(SET_SLIDE, action);
+        }
+        console.log(`${lastSetSlideAction} === ${action}`);
     });
 
     socket.on(ADD_DRAW_POINTS, (action) => {

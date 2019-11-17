@@ -1,17 +1,18 @@
 import React from "react";
+import {Col} from "react-bootstrap";
 
 export class Text extends React.Component {
 
     render() {
         return  (
-            <div>
-                <p>This is my Text</p>
+            <Col xs={6}>
+                <p>This is my text</p>
                 <ul>
-                    <li>dffsdgg</li>
-                    <li>sdgdfds</li>
-                    <li>sgsdgskg</li>
+                    <li>first item</li>
+                    <li>seconde item</li>
+                    <li>third item</li>
                 </ul>
-            </div>
+            </Col>
 
         );
     }

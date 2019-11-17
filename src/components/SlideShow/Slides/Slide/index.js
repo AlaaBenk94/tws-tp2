@@ -73,7 +73,7 @@ class Slide extends React.Component {
     render() {
         return (
             <Row ref={this.slideView} className={`justify-content-center align-items-center h-100 bg-light text-dark`}>
-                <div id="fullscreen" className="text-dark" role="button"
+                <div id="fullscreen" className="text-dark"
                      onClick={() => toggleFullScreen(this.slideView.current)}><i className="material-icons">fullscreen</i></div>
                 <Titre title={this.props.slide.title}/>
                 {this.props.slide.type === "title" ? '' : <Content/>}

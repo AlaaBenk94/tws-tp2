@@ -1,14 +1,27 @@
 import React from "react";
+import {Col} from "react-bootstrap";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 
-export class Image extends React.Component {
+const mapStateToProps = (state) => {
+    return {
+        mode: state.mode,
+        index: state.index,
+        slides: state.slides
+    }
+}
+
+class Image extends React.Component {
 
     render() {
         return  (
-            <div>
-                <p>This is an image placeholder</p>
-            </div>
+            <Col xs={6}>
+                <img src={this.props.slides[this.props.index-1].image}/>
+            </Col>
 
         );
     }
 
 }
+
+export const ImageConnected = withRouter(connect(mapStateToProps, null)(Image));
