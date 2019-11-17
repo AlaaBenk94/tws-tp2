@@ -42,13 +42,7 @@ io.on('connection', function (socket) {
 
     socket.on(SET_SLIDE, (action) => {
         console.log(`received set slide action ${JSON.stringify(action)} from ${socket.id}`);
-
-        if( lastSetSlideAction.index !== action.index) {
-            console.log(`${lastSetSlideAction} !== ${action}`);
-            lastSetSlideAction = action;
-            socket.broadcast.emit(SET_SLIDE, action);
-        }
-        console.log(`${lastSetSlideAction} === ${action}`);
+        socket.broadcast.emit(SET_SLIDE, action);
     });
 
     socket.on(ADD_DRAW_POINTS, (action) => {
@@ -59,6 +53,16 @@ io.on('connection', function (socket) {
     socket.on(RESET_DRAW_POINTS, (action) => {
         console.log(`received reset draw points action ${JSON.stringify(action)} from ${socket.id}`);
         socket.broadcast.emit(RESET_DRAW_POINTS, action);
+    });
+
+    socket.on(REMOVE_SLIDE, (action) => {
+        console.log(`received remove slide action ${JSON.stringify(action)} from ${socket.id}`);
+        socket.broadcast.emit(REMOVE_SLIDE, action);
+    });
+
+    socket.on(ADD_SLIDE, (action) => {
+        console.log(`received add slide action ${JSON.stringify(action)} from ${socket.id}`);
+        socket.broadcast.emit(ADD_SLIDE, action);
     });
 
 });

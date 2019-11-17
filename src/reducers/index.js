@@ -6,12 +6,13 @@ import {
     REMOVE_SLIDE,
     RESET_DRAW_POINTS,
     SET_MODE,
-    SET_SLIDE
+    SET_SLIDE, TOGGLE_NOTES
 } from "../actions";
 import {PRESENT} from "../index";
 
 const initialState = {
     mode: PRESENT,
+    showNotes: false,
     index: 1,
     slides: [
         {type: 'title', title: 'TIW 8', visible: true, notes: "note 1"},
@@ -42,10 +43,10 @@ function rootReducer(state = initialState, action) {
         case REMOVE_SLIDE: {
             console.log("remove slide");
             let newSlides = [...state.slides];
-            newSlides.splice(action.pos, 0, action.payload);
+            newSlides.splice(action.pos, 1);
             return {
                 ...state,
-                slides: state.slides.splice(action.pos, 1)
+                slides: newSlides
             };
         }
         case SET_SLIDE:
@@ -91,6 +92,12 @@ function rootReducer(state = initialState, action) {
                     clickY: [],
                     clickDrag: []
                 }
+            };
+        case TOGGLE_NOTES:
+            console.log("reset draw points");
+            return {
+                ...state,
+                showNotes: !state.showNotes
             };
         default:
             return state

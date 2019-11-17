@@ -2,13 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import {isMobile} from "react-device-detect";
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {SlideShowConnected as SlideShow} from "./components/SlideShow";
 import {Provider} from "react-redux";
 import store from "./store";
 import {socketClient} from "./middleware";
-import {ADD_DRAW_POINTS, addDrawPoints, RESET_DRAW_POINTS, resetDrawPoints, SET_SLIDE, setSlide} from "./actions";
+import {
+    ADD_DRAW_POINTS,
+    ADD_SLIDE,
+    addDrawPoints, addSlide, REMOVE_SLIDE, removeSlide,
+    RESET_DRAW_POINTS,
+    resetDrawPoints,
+    SET_SLIDE,
+    setSlide
+} from "./actions";
 
 export const PRESENT = "present";
 export const CONTROLER = "controler";
@@ -32,6 +39,20 @@ socketClient.on(RESET_DRAW_POINTS, (action) => {
     console.log(`socket reset : ${action}`);
     if (action.type === RESET_DRAW_POINTS) {
         store.dispatch(resetDrawPoints(true));
+    }
+});
+
+socketClient.on(ADD_SLIDE, (action) => {
+    console.log(`socket reset : ${action}`);
+    if (action.type === ADD_SLIDE) {
+        store.dispatch(addSlide(action.payload, action.pos, true));
+    }
+});
+
+socketClient.on(REMOVE_SLIDE, (action) => {
+    console.log(`socket reset : ${action}`);
+    if (action.type === REMOVE_SLIDE) {
+        store.dispatch(removeSlide(action.index, true));
     }
 });
 

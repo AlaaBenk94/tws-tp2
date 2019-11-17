@@ -12,7 +12,6 @@ import {
     pointerUpEvent,
     setPoints
 } from "../../../../canvasManager";
-import {EDIT} from "../../../../index";
 import {addDrawPoints} from "../../../../actions";
 
 
@@ -74,18 +73,18 @@ class Slide extends React.Component {
     render() {
         return (
             <Row ref={this.slideView} className={`justify-content-center align-items-center h-100 bg-light text-dark`}>
-                <div id="fullscreen" className="btn btn-danger"
-                    onClick={() => toggleFullScreen(this.slideView.current)} >{'[ ]'}</div>
+                <div id="fullscreen" className="text-dark" role="button"
+                     onClick={() => toggleFullScreen(this.slideView.current)}><i className="material-icons">fullscreen</i></div>
                 <Titre title={this.props.slide.title}/>
                 {this.props.slide.type === "title" ? '' : <Content/>}
                 <canvas className={`stroke h-100`}
-                            ref={this.refCanvas}
-                            onPointerDown={pointerDownHandler}
-                            onPointerMove={pointerMoveHandler}
-                            onPointerUp={(ev) => {
-                                pointerUpEvent(ev);
-                                this.props.addPoints(clickX, clickY, clickDrag);
-                            }}/>
+                        ref={this.refCanvas}
+                        onPointerDown={pointerDownHandler}
+                        onPointerMove={pointerMoveHandler}
+                        onPointerUp={(ev) => {
+                            pointerUpEvent(ev);
+                            this.props.addPoints(clickX, clickY, clickDrag);
+                        }}/>
             </Row>);
     }
 }
